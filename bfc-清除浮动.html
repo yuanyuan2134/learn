@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>清除浮动</title>
+</head>
+<style>
+    .par {
+        border: 5px solid rgb(91, 243, 30);
+        width: 300px;
+        overflow: hidden;
+    }
+    
+    .child {
+        border: 5px solid rgb(233, 250, 84);
+        width:100px;
+        height: 100px;
+        float: left;
+    }
+</style>
+<body>
+    <div class="par">
+        <div class="child"></div>
+        <div class="child"></div>
+    </div>
+</body>
+<script>
+    // while (true) {
+        // console.log(window)
+        // debugger;
+    // alert("你关不掉我~");
+// }
+
+function formatDate(value, fmt) {
+  if (!(value instanceof Date)) {
+    // // safari 仅支持 年/月/日 格式，不支持 年-月-日 
+    value = isSafariBrowser() ? value && value.replace(/-/g, '/') : value
+    value = new Date(value);
+  }
+  var o = {
+    "M+": value.getMonth() + 1,                 //月份   
+    "d+": value.getDate(),                    //日   
+    "h+": value.getHours(),                   //小时   
+    "m+": value.getMinutes(),                 //分   
+    "s+": value.getSeconds(),                 //秒   
+    "q+": Math.floor((value.getMonth() + 3) / 3), //季度   
+    "S": value.getMilliseconds()             //毫秒   
+  };
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (value.getFullYear() + "").substr(4 - RegExp.$1.length));
+  }
+  for (var k in o) {
+    if (new RegExp("(" + k + ")").test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    }
+  }
+  return fmt;
+}
+
+formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+
+
+let arr = [1,2,3,4,5];
+let result = arr.reduce((x,y)=>{
+    return x+y
+})
+console.log(result)
+
+
+let arr2=['name', 'age','long','short','long','name','name']
+let arrResult = arr2.reduce((pre,cur)=>{
+    if(cur in pre){
+        pre[cur]++
+    }else{
+        pre[cur] = 1
+    }
+    return pre
+},{})
+console.log(arrResult)
+
+
+let arr3=[111,222,111,2222,333,111]
+let result3 = arr3.reduce((x,y)=>{
+    if(!x.includes(y)) {
+        x.push(y)
+    }
+    return x;
+},[])
+console.log(result3);
+
+
+function Dog(){}        //类         
+Dog.prototype.name="旺财";
+Dog.prototype.eat=function(){
+    console.log(this.name);
+};
+var obj=new Dog();      //实列
+obj.name='沪江';
+console.log(Dog.prototype.name);  //旺财
+console.log(obj.prototype);      //undefined,prototype是类上才有的，实列上没有
+obj.eat(); 
+
+
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+Person.prototype.say = function() {
+    console.log(this.name + ',' + this.age);
+}
+
+function Son(name,age,job) {
+    Person.apply(this,arguments);
+    this.job= job;
+}
+Son.prototype = new Person();
+Son.prototype.constructor = Son;
+const o = new Son('fangyuan', 28, '前端开发');
+o.say();
+
+
+
+function content(obj) {
+    function F(){}
+    F.prototype = obj;
+    return new F();
+}
+
+const con = content(Person.prototype);
+
+function Sub(){
+    Person.call(this);
+}
+
+Sub.prototype = con;
+con.constructor = Sub;
+var sub1 = new Sub();
+console.log(sub1.age);
+</script>
+</html>
